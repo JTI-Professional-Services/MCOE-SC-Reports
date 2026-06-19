@@ -1,0 +1,3442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 6.21.5  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Form_C" pageWidth="612" pageHeight="792" orientation="Landscape" whenNoDataType="AllSectionsNoDetail" columnWidth="504" leftMargin="54" rightMargin="54" topMargin="54" bottomMargin="54" uuid="f5c14581-c94b-40eb-88dd-ec0c6831507b">
+	<style name="Header Title" hTextAlign="Center" fontName="Arial" fontSize="10"/>
+	<style name="Text Base" isDefault="true" fontName="Arial" fontSize="8"/>
+	<style name="Report Heading" style="Text Base" fontName="Arial" fontSize="9" isBold="true"/>
+	<style name="Header_Data" fontName="Arial" fontSize="12" isBold="true">
+		<pen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+		<box padding="3">
+			<pen lineWidth="0.5" lineStyle="Dotted" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="judgeName" class="java.lang.String"/>
+	<parameter name="jurisdiction" class="java.lang.String"/>
+	<parameter name="lastInventoryDate" class="java.util.Date"/>
+	<parameter name="reportQuarter" class="java.lang.Integer"/>
+	<parameter name="reportYear" class="java.lang.Integer"/>
+	<parameter name="Judge_Code" class="java.lang.String" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{judgeName}.split(" ")[ $P{judgeName}.split(" ").length - 1 ]]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportBegin" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[java.sql.Date.valueOf(java.time.LocalDate.of($P{reportYear}, (($P{reportQuarter}-1)*3)+1, 1))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="reportEnd" class="java.util.Date" isForPrompting="false">
+		<defaultValueExpression><![CDATA[java.sql.Date.valueOf(java.time.LocalDate.of($P{reportYear}, $P{reportQuarter} == 4 ? 1 : (($P{reportQuarter})*3)+1, 1))]]></defaultValueExpression>
+	</parameter>
+	<parameter name="caseDetails" class="java.lang.Boolean"/>
+	<parameter name="runDate" class="java.util.Date" isForPrompting="false">
+		<parameterDescription><![CDATA[Date & time the report was generated]]></parameterDescription>
+		<defaultValueExpression><![CDATA[java.util.Date.from(java.time.Instant.now())]]></defaultValueExpression>
+	</parameter>
+	<parameter name="judgeBarNumber" class="java.lang.String"/>
+	<parameter name="notificationEmail" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="case_number" class="java.lang.String"/>
+	<field name="case_category" class="java.lang.String"/>
+	<field name="subcase_type" class="java.lang.String"/>
+	<field name="party_type" class="java.lang.String"/>
+	<field name="filing_date" class="java.util.Date"/>
+	<field name="run_date_case_status" class="java.lang.String"/>
+	<field name="run_date_status_date" class="java.util.Date"/>
+	<field name="beginning_case_status" class="java.lang.String"/>
+	<field name="beginning_status_date" class="java.util.Date"/>
+	<field name="ending_case_status" class="java.lang.String"/>
+	<field name="ending_status_date" class="java.util.Date"/>
+	<field name="primary_document_type" class="java.lang.String"/>
+	<field name="primary_document_filing_date" class="java.util.Date"/>
+	<field name="account_due_date" class="java.lang.Integer"/>
+	<field name="case_notices_citations" class="java.lang.Integer"/>
+	<field name="visiting_judge" class="java.lang.String"/>
+	<field name="report_line" class="java.lang.Integer"/>
+	<variable name="A" class="java.lang.Integer" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{case_number}]]></variableExpression>
+	</variable>
+	<variable name="V" class="java.lang.Integer" calculation="DistinctCount">
+		<variableExpression><![CDATA[$F{visiting_judge} != null ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="A_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 1 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_1" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 1 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_2" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 2 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_2" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 2 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_3" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 3 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_3" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 3 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_4" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_1} + $V{A_2} - $V{A_3}]]></variableExpression>
+	</variable>
+	<variable name="V_4" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_1} + $V{V_2} - $V{V_3}]]></variableExpression>
+	</variable>
+	<variable name="A_5" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 5 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_5" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 5 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_6" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{report_line} <= 3 ? $F{case_notices_citations} : 0]]></variableExpression>
+	</variable>
+	<variable name="V_6" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{report_line} <= 3 && $F{visiting_judge} != null ? $F{case_notices_citations} : 0]]></variableExpression>
+	</variable>
+	<variable name="A_7" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 7 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_7" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 7 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_8" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 8 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_8" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 8 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_9" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 9 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_9" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 9 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_10" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_7} + $V{A_8} - $V{A_9}]]></variableExpression>
+	</variable>
+	<variable name="V_10" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_7} + $V{V_8} - $V{V_9}]]></variableExpression>
+	</variable>
+	<variable name="A_11" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 11 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_11" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 11 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_12" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 12 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_12" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 12 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_13" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 13 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_13" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 13 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_14" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_11} + $V{A_12} - $V{A_13}]]></variableExpression>
+	</variable>
+	<variable name="V_14" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_11} + $V{V_12} - $V{V_13}]]></variableExpression>
+	</variable>
+	<variable name="A_15" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 15 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_15" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 15 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_16" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 16 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_16" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 16 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_17" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 17 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_17" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 17 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_18" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 18 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_18" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 18 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_19" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_16} + $V{A_17} - $V{A_18}]]></variableExpression>
+	</variable>
+	<variable name="V_19" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_16} + $V{V_17} - $V{V_18}]]></variableExpression>
+	</variable>
+	<variable name="A_20" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 20 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_20" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 20 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_21" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 21 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_21" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 21 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_22" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 22 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_22" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 22 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_23" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_20} + $V{A_21} - $V{A_22}]]></variableExpression>
+	</variable>
+	<variable name="V_23" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_20} + $V{V_21} - $V{V_22}]]></variableExpression>
+	</variable>
+	<variable name="A_24" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 24 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_24" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 24 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_25" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{report_line} > 3 && $F{report_line} < 25 ? $F{case_notices_citations} : 0]]></variableExpression>
+	</variable>
+	<variable name="V_25" class="java.lang.Integer" calculation="Sum">
+		<variableExpression><![CDATA[$F{report_line} > 3 && $F{report_line} < 25 && $F{visiting_judge} != null ? $F{case_notices_citations} : 0]]></variableExpression>
+	</variable>
+	<variable name="A_26" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 26 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_26" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 26 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_27" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 27 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_27" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 27 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_28" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 28 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_28" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 28 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_29" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_26} + $V{A_27} - $V{A_28}]]></variableExpression>
+	</variable>
+	<variable name="V_29" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_26} + $V{V_27} - $V{V_28}]]></variableExpression>
+	</variable>
+	<variable name="A_30" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 30 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_30" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 30 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_31" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 31 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_31" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 31 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_32" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 32 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_32" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 32 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_33" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_30} + $V{A_31} - $V{A_32}]]></variableExpression>
+	</variable>
+	<variable name="V_33" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_30} + $V{V_31} - $V{V_32}]]></variableExpression>
+	</variable>
+	<variable name="A_34" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 34 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_34" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 34 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_35" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 35 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_35" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 35 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_36" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 36 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_36" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 36 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_37" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_34} + $V{A_35} - $V{A_36}]]></variableExpression>
+	</variable>
+	<variable name="V_37" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_34} + $V{V_35} - $V{V_36}]]></variableExpression>
+	</variable>
+	<variable name="A_38" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 38 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_38" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 38 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_39" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 39 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_39" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 39 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_40" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 40 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_40" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 40 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_41" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_38} + $V{A_39} - $V{A_40}]]></variableExpression>
+	</variable>
+	<variable name="V_41" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_38} + $V{V_39} - $V{V_40}]]></variableExpression>
+	</variable>
+	<variable name="A_42" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 42 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_42" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 42 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_43" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 43 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_43" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 43 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_44" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 44 ? $F{case_number} : null]]></variableExpression>
+	</variable>
+	<variable name="V_44" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 44 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_45" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{A_42} + $V{A_43} - $V{A_44}]]></variableExpression>
+	</variable>
+	<variable name="V_45" class="java.lang.Integer">
+		<variableExpression><![CDATA[$V{V_42} + $V{V_43} - $V{V_44}]]></variableExpression>
+	</variable>
+	<variable name="A_46" class="java.lang.Integer" calculation="Count"/>
+	<variable name="V_46" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 46 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_47" class="java.lang.Integer" calculation="Count"/>
+	<variable name="V_47" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 47 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_48" class="java.lang.Integer" calculation="Count"/>
+	<variable name="V_48" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 48 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_49" class="java.lang.Integer" calculation="Count"/>
+	<variable name="V_49" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 49 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<variable name="A_50" class="java.lang.Integer" calculation="Count"/>
+	<variable name="V_50" class="java.lang.Integer" calculation="Count">
+		<variableExpression><![CDATA[$F{report_line} == 50 ? $F{visiting_judge} : null]]></variableExpression>
+	</variable>
+	<group name="DecedentsEstates">
+		<groupHeader>
+			<band height="105">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="c9c4e3c3-6d22-4c39-a262-501e5a676bf2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_1}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="04f7ef4b-b6bc-4e22-8402-717ebbe8b232">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="42c4918b-0b1f-4934-8461-8dd72f44a29c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[3]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="90" width="180" height="15" uuid="bba67f5a-98a9-4ae1-a196-8d7d053b670d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Number of notices to file accounts, or citations issued]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="90" width="10" height="15" uuid="5bf2cdd1-ecc3-49a5-accc-8e55e2df7e31">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[6]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="60" width="60" height="15" uuid="a6acd10b-3545-499f-9820-975d91f627b3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_4}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="ad87bc6f-b988-496b-9c29-2f5babe8ec98">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_1}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="1509d395-1eaf-4da1-809e-04fc4478b856">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="75" width="180" height="15" uuid="2268b37d-745c-4c38-8745-ce309bd22c22">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Number in which accounts are past due]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="a58359c3-5957-4d64-84b6-a57a47224df2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="056bfdd9-7870-482e-84ee-a627d1fd05ea">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_3}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="60" width="180" height="15" uuid="6613b284-a1d6-4aec-ab8a-85dc27acbed5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="d5b81127-3966-4ac9-8361-53f5ddc735d8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_2}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="a64a89e0-78d4-4028-8790-976cb8620a81">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[2]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="a2be9695-e9d2-4c7f-a3ff-310344d71cc5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_2}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="90" width="60" height="15" uuid="21cb0ffd-d55e-44ef-b0b5-3e6de03f698f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_6}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="f3e13e67-e4eb-4a71-a448-dc9639fbc993">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[1]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="90" width="60" height="15" uuid="c29b65cd-8b63-4daa-b3ae-038dfb2171b9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_6}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="75" width="60" height="15" uuid="7caa883e-9f71-4276-8e4e-0cdbd8041d92">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_5}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="60" width="60" height="15" uuid="3e350464-1bdb-40f4-9ea3-bc21d81c0f08">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_4}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="75" width="10" height="15" uuid="9b3b78c2-2eca-42ed-9fdf-cde05bca68a8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[5]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="15" width="180" height="15" uuid="ccd7b0af-960a-4137-aad3-f0e17ce6b3c6"/>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Decedents' Estates]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="75" width="60" height="15" uuid="68f2b1e0-ddec-4cc8-ab31-17e45c7cae05">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_5}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="60" width="10" height="15" uuid="57f34ab3-a036-4411-b635-dd7b6efa715b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[4]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="d3fef8c0-fc68-4ea5-b981-8b3945a7fac1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<pen lineWidth="1.0"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" mode="Transparent" x="435" y="0" width="75" height="15" printWhenGroupChanges="DecedentsEstates" uuid="01c9d585-c9e4-4368-b5ee-05d5dabac988">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Visiting Judge]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Guardianships">
+		<groupHeader>
+			<band height="135">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="2379a7e7-e80c-435d-99c6-fd0e4d1268e8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_7}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="75" width="180" height="15" uuid="e8c15859-6337-48eb-a479-c9f611ae81c1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="ed50f279-1839-4bec-a70c-5c4a72b3fad9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[9]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="c015e13a-991d-4625-8db4-eae1c85dfd8b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[7]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="60" width="10" height="15" uuid="b509fb15-59ce-4aee-bed0-a273505083f6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[11]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="bc4d09a5-449d-446f-acbf-7d9e67253748">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="d5157962-03bf-441b-8c36-bf03907548db">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="90" width="60" height="15" uuid="c5bca1db-06d2-4508-aa8c-0490c4370236">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_13}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="105" width="10" height="15" uuid="1f1e307d-3f16-444f-a3d6-a16a4426a0e3">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[14]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="422c1842-460f-46c2-bdb9-161450edc0c6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_7}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="90" width="10" height="15" uuid="0327f13d-a06e-4220-8043-e940c7537a37">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[13]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="e7a956fe-8979-4fa4-9e05-128ff57f7335">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_9}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="54" y="120" width="306" height="15" uuid="3e05a81b-a7b5-41d1-9d8c-9b8fd189540f"/>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font isBold="true"/>
+						<paragraph lineSpacing="1_1_2"/>
+					</textElement>
+					<text><![CDATA[Emergency, Limited, and Interim Guardians appointed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="0c92c225-c8aa-44da-9c34-f3a562e1653a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_8}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="52159a7e-9cc8-4ec5-bff4-8235ed36892f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_10}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="120" width="10" height="15" uuid="3029d295-a8e6-47cf-b7a8-071d89eb28d9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[15]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="60" width="60" height="15" uuid="9f1ef2be-150d-42e7-bc5a-0a2d432da907">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_11}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="120" width="60" height="15" uuid="33808f79-e716-4276-8cc8-0e2c0a3e4c64">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_15}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="105" width="60" height="15" uuid="76b97d99-139c-4650-bce7-f0ae1bce7ed0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_14}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="566e3691-c516-435c-b8f3-575881a4e2d6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_8}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="75" width="60" height="15" uuid="8704d3b5-98ea-407c-a895-c07f72cf323b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_12}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="971db697-f07f-4ef3-aee1-28e70053ca0d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_10}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="90" width="60" height="15" uuid="b4a5e44f-701d-417d-8294-7ade10088f28">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_13}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="68ed4b79-aa91-4d66-98cc-77e47a4b260f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="105" width="180" height="15" uuid="367cf777-63b8-4f27-a58d-d0423c416da4">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="3f639efd-e403-4059-aa76-1916327941a9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="80b63771-0616-4c0d-b305-eabffeaa7bfa">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[10]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="da7c41ea-3139-49fa-83eb-bd0be6b81b32"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Guardianships of Minors]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="60" width="60" height="15" uuid="98f5c932-fd2c-40ff-8d67-d2512577faf4">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_11}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="17cfd39d-36d4-45b9-98a0-d5c6f0643898">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_9}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="75" width="60" height="15" uuid="006322fb-7b31-49ae-9ae5-cbe09938b09f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_12}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="75" width="10" height="15" uuid="7a87eea1-b9fe-4c57-bb94-3e0f4bdf8a45">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[12]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="90" width="180" height="15" uuid="7f15e9f7-f6d9-49e7-8108-7a0f7cbef5ca">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="120" width="60" height="15" uuid="0b58e461-4657-4511-ae7e-b408d8025091">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_15}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="105" width="60" height="15" uuid="7a06afcd-afa0-473c-aced-059bc3f101ee">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_14}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="23235ede-0915-4d62-ba75-17b4f7e0677c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[8]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="60" width="180" height="15" uuid="8667fc3e-af82-4492-ba98-12b3375d4153">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="60" width="180" height="15" uuid="11080e56-7fa4-4490-9bf2-3fd1bb3b474c"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Guardianships of Incompetents]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Conservatorships">
+		<groupHeader>
+			<band height="60">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="56d37b17-1298-4d91-a8d3-777f5fe26c00">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_19}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="2918169f-600b-464c-adb7-584ef95dc029">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[17]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="d2184eb9-193a-40e1-b40a-90025f8ef27a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_17}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="0fed286a-772b-4bcb-8fa9-c1e9ffcda4b5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_16}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="07dcdc3a-c819-45d0-8e1c-b2906cf7ef45">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_18}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="28cb32a4-1e33-4e0c-afb7-e51e270708a6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_16}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="dd2a829f-0946-4544-b760-5ce6530e2136">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_18}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="d118524b-2e62-465d-8f73-b1e195a998c9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="5e284fd0-4663-44ce-a911-110b97fec3c8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="71bfb088-4ea2-464e-992d-b788a3d077c9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_19}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="0cc292ef-d820-4692-a494-3b2016e8d378">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_17}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="d566b914-1e7e-4fbe-994f-ef82b5009e38">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="9bda4d9c-87df-4918-ac0d-2949b3546c5e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[18]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="b87668c3-71a5-4339-bc6f-bb874279e190"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Conservatorships]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="e52d7f09-ebab-4db4-9ec7-d145497e945e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="8294acdc-b0eb-48b7-b2b4-0b4ca6ef0185">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[16]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="132ee52d-70de-4df3-b1d1-39b901ef927d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[19]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="TestamentaryTrusts">
+		<groupHeader>
+			<band height="60">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="8780b05b-1380-4d68-95b4-23cdaa39986e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_22}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="659308dc-17fd-41b4-9d30-38756931e8e0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_23}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="a879ad38-0e98-4e60-a27e-4dc3d5b1cf18">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[21]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="9fede95d-6afe-4aad-b8c0-6a9d35776455">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_22}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="06c5db7f-dbf9-4bb6-b583-73d5291fd8ee">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[20]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="2c9bdfc7-dded-415c-a1c1-f8d3e6dc5c9d"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Testamentary Trusts]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="e170876a-4ad1-4521-8af0-1100ee2bd7d7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[22]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="79f2be47-e2a1-4102-98a7-974f2d10f30c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="b209cdd8-4b2c-4b67-9b2d-6ea0846c8193">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_21}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="a08c87ca-524e-4c39-8b08-4a53a4f6e67d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="e51e05dd-a24c-47d3-98d2-33322d5c0fa8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_20}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="af749846-7e56-4564-bb7d-8e355c34395a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="8576d639-2a90-4cf0-a10d-a27569840f64">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="0e14b27a-2c99-488d-a4a5-db077a0a0f3a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[23]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="b5c95d97-0004-4e00-ab32-8f83f187807c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_20}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="cff42fd3-6079-4b37-9a31-4a43ba28b49c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_23}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="1876dadd-5e29-46b8-b222-9adf9ef7bc02">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_21}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="GCTT">
+		<groupHeader>
+			<band height="30">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="07762af9-71ac-46b7-a2f0-310c68be6a28">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_24}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="ceaf3259-c14a-41dc-bb75-9d309d632936">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Number of notices to file accounts, or citations issued]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="50e05b5e-e185-4d8c-a489-1b36f1bba6a4">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Number in which accounts are past due]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="08961711-eba9-4312-a050-5e885e4c6e81"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Guards., Conservs., and Test. Trusts]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="f107d523-9b36-49a6-9c65-376be3d15d46">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_24}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="5cb69dd4-90f7-4774-ac7f-187a046fd0bb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[24]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="5bae6a81-fe01-4dbc-8a67-0209ce8745de">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_25}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="5cd9b5d2-4415-4f0d-a4a1-d02db7d55a7e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[25]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="9dc76282-070c-47f3-9f59-ccb86bd03699">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_25}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="CivilActions">
+		<groupHeader>
+			<band height="60">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" isPrintInFirstWholeBand="true" uuid="8be63585-70de-4dd4-ab7e-c4d78668b83d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_28}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" isPrintInFirstWholeBand="true" uuid="1739e3db-82fc-4639-ad05-e546f45f4aa7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement>
+						<font size="8"/>
+					</textElement>
+					<text><![CDATA[Civil Actions]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" isPrintInFirstWholeBand="true" uuid="19ec78c1-39f5-4ddd-8b97-d3a37bf853df">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_27}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" isPrintInFirstWholeBand="true" uuid="6fb5b023-5520-4482-bc7d-6131c4f82b20">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_29}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" isPrintInFirstWholeBand="true" uuid="2966e8c3-5113-47ba-836f-001ccbe39d4e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_26}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" isPrintInFirstWholeBand="true" uuid="16491e65-97c2-4855-8630-e22bbc955c8d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_28}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" isPrintInFirstWholeBand="true" uuid="09ac982e-282f-42e4-99d7-ec0c8fd105d1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_27}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" isPrintInFirstWholeBand="true" uuid="d76bbb32-0311-4e1b-896d-409997ef2498">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_26}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" isPrintInFirstWholeBand="true" uuid="da954c73-745f-4089-92f0-e661dde20de9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" isPrintInFirstWholeBand="true" uuid="286a4b53-4624-467e-97b5-eeaf0a782eec">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" isPrintInFirstWholeBand="true" uuid="bec5854a-a4ab-4867-be6f-f423f7e90540">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" isPrintInFirstWholeBand="true" uuid="bb2550e5-de9e-469d-bacc-cf4d929beccc">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[27]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" isPrintInFirstWholeBand="true" uuid="a855102f-d26a-4695-8902-8c63fd480691">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[28]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" isPrintInFirstWholeBand="true" uuid="cbb60666-1433-43ec-8b5b-5bd4867fe097">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[26]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" isPrintInFirstWholeBand="true" uuid="00eac659-24be-438c-b4a0-9768032afbbb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[29]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" isPrintInFirstWholeBand="true" uuid="9b12f330-2843-498b-bf73-f5e0288b9237">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_29}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" isPrintInFirstWholeBand="true" uuid="5fece7fc-080f-4fc8-b422-625cd698b555">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Adoptions" isStartNewPage="true">
+		<groupHeader>
+			<band height="75">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="d1e29161-5586-4f05-b0db-235a51892922">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_32}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="bd6e694b-f77f-44bf-a8a7-765ce5e61b94">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_31}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="60" width="60" height="15" uuid="b5295024-d3ac-4419-a309-3b7e51d54cdf">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_33}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="6ee6ded6-0e94-4bbd-abbe-68503b43d181">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="15" width="180" height="15" uuid="5bfd97aa-6392-4a0b-8b2c-b91a18e252ad"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Adoptions]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="60" width="60" height="15" uuid="a11685b5-1793-4f1c-9ce2-8b071724cc2f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_33}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="f36adf3d-7784-40c8-bce0-41da0ef4d98c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[30]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="60" width="180" height="15" uuid="b2cf6d39-4d95-4aac-b437-6d0b6c36aa95">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="26d2ba27-14a1-47b6-b4b1-efa0a8ee942d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="de7ab00d-0e8c-42ce-bcd3-5dd351cfc9a6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[31]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="a00e69b4-ad7c-4421-a338-8903b739ef02">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="b5d5e618-6108-461c-ac4d-ed41814c538a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_30}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="3b448454-39a4-4c98-9503-e81331dcfba5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_30}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="60" width="10" height="15" uuid="211be881-1fe1-4794-b3ab-7b6084bc9e59">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[33]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="728b28e7-94b3-44e9-a962-4f4c6a6f3887">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_31}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="2fc018f0-6c85-40d9-898f-bba1ad494537">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[32]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="3599fa0a-34ce-4c21-97be-c307c26dd4d9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_32}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement isPrintRepeatedValues="false" x="435" y="0" width="75" height="15" printWhenGroupChanges="CivilActions" uuid="2e5d5a18-a2f1-4825-a4f9-b536434bc2b2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Visiting Judge]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="MHandCivil">
+		<groupHeader>
+			<band height="60">
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="8ad259fb-5a46-4238-8533-2e7e39cb91fb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[36]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="d00b950c-f346-4580-85f2-00c342b4d975">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_36}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="76516543-ec5c-4e2e-9639-ea7c682f6b33">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_34}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="524500da-c00b-4c72-92b0-f86811a2b92f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_36}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="26747bd0-dce6-45bf-9edc-2dc08e808e16">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="71de378b-9ea7-434b-910a-349eeec0f8c5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[37]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="f4ce1703-4736-4045-8d33-71b6a1b25376">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[34]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="2e1fdcbc-8740-4da0-af15-c78891824a45">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_37}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="2e90d2fb-e847-402f-a188-102c3091e1c6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_35}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="4264f558-3fcb-43b8-a087-18a06fda2071">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="3534fbb4-c32a-4298-877d-3f90a1a4722e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_37}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="5d440ed2-fc62-456c-adc7-5f91553cdb83">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_34}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="845c71c1-ba3c-4c83-b017-bac55926ae6c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[35]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="0ffd52f1-b9b8-4ae5-baad-1291eb62daec"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Mental Illness and Mental Retardation]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="2d0f19f0-630a-4de9-94d6-5fef86707dd0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="46902562-3078-4189-93e1-10df8efe4f2b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="9ede5d09-1ac5-45d2-86dd-07a33477f6a9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_35}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="MinorsSettlements">
+		<groupHeader>
+			<band height="60">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="19cd0250-da9c-410f-a0f7-028b85edc22d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_41}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="8619094e-5646-412f-9184-710d66a31c99">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_39}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="975c1f69-f118-4f12-bcd6-487af213ed6a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_38}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="c065b7ea-f9c5-40ca-ab26-a359cd952d64">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="9612d6c7-0429-4e39-8912-0f1a3fffdb64">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[39]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="40444572-7d14-44c6-9fd1-641e247a3703">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_41}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="04566711-88b0-40f3-b5e3-21376e3ef997">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_38}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="3acb2070-35a5-4c31-b842-e86f6917f2db"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Minors' Settlements]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="ac0b9c58-ab87-4d80-85da-abfd64c543b5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[40]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="ae90bc27-21c5-447a-a2bd-3c4bd9453ff7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_40}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="585824eb-1f5f-4b55-b25a-507edec46c0d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[38]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="db658c9d-cc09-4bf6-b6ff-3f95443f07ed">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="347b252c-66ce-459b-8c36-880fb761dd62">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="117f0b01-ca83-47c9-a028-d7bba1f5a9eb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="be0362c8-7a12-4369-ba63-f6af0d26b032">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[41]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="639a7f9a-8d30-4260-a122-202a8905cc73">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_39}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="7a91ed78-9609-42f1-a0fb-bd4aacf4a50a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_40}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="WrongfulDeath">
+		<groupHeader>
+			<band height="60">
+				<staticText>
+					<reportElement x="180" y="45" width="180" height="15" uuid="dad29fd9-e63c-4edf-9540-35ec26c067f2">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="30" width="60" height="15" uuid="d9e2c7fe-7818-4f3b-9519-0ccac32ccf7a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_44}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="30" width="60" height="15" uuid="105b52d2-ff61-4528-bb12-d7e7676c90ae">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_44}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="45" width="60" height="15" uuid="5f4ed138-054a-4f86-aca7-81a540f0ddf9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_45}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="30" width="180" height="15" uuid="c0ae6a28-b7ac-4609-9d99-803dd37a5f96">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Closed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="edee62d7-3922-45b7-890c-b1b7fc7f8b3a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_43}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="5b88680b-84b1-4e3d-8b2a-ead4f548eb33">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Pending at end of preceding quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="c08f7ef9-954d-4423-ab29-50cf493937fb">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[43]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="30" width="10" height="15" uuid="e96f10b7-180e-421c-9b1b-a98b4600cf3d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[44]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="45" width="10" height="15" uuid="8f0588e3-f87b-49f6-a645-f9c8c201e326">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[45]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="a6a2a3fc-d343-4aa3-8a7f-167de507eb37">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_43}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="56580ae0-6ecf-4fdc-87f1-aee897dde262">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_42}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="0c28c667-13ef-477b-a48d-db2844d46f6a"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Wrongful Death]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="318f336a-88dc-473c-9f04-935d7c23a67c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="ecd0931e-6cca-43f1-8974-547b2af6d4d6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[42]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="45" width="60" height="15" uuid="099e46a9-a772-4162-ab46-a826fb158ca8">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_45}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="d58c3626-7218-430d-81c2-e76c7f3770cf">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_42}]]></textFieldExpression>
+				</textField>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="DelayedRegAndCorrBirth">
+		<groupHeader>
+			<band height="30">
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="e9d7e25d-c295-491c-9e82-cedadc919b0a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_47}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="250" y="0" width="110" height="15" uuid="a7c919e0-230b-4eaf-88ce-2e6769117bce">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="6bfe673e-ee96-457e-9c43-946ad1aad04b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_46}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="cfa35b56-8010-45ca-9ca9-6981bd94e44a">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[47]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="d5087ff4-b29d-4035-acdb-065abaa513a1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_46}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="478012f6-f250-4f1c-802c-7cd1e4b485e5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_47}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="250" height="15" uuid="aaaaf39b-1e94-4d58-8907-9ac88e57fffc"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Delayed Registration of Birth and Correction of Birth]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="3e8f36c7-25fe-4dfe-b6a5-c5ee97c78c99">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[46]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="93bd64ae-ec1d-4d32-b707-e116b36f9cac">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Heard and terminated during quarter]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="ChangeName">
+		<groupHeader>
+			<band height="30">
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="adff230e-b1b4-414c-bc39-943beaf4a981"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Change of Name]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="15" width="10" height="15" uuid="60b65130-f922-44b4-a1bc-f862c3ee94f9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[49]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="15" width="60" height="15" uuid="fc72892c-443e-4d50-97af-b013c847963e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_49}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="15" width="60" height="15" uuid="7f8e3bdc-f918-4262-af1d-be13db9177d0">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_49}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="f0cfa586-4f55-410b-a3dd-a1f3ad95f942">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Filed during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="2144704d-055e-459c-aedd-1376ad43d66c">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_48}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="ff034cca-eaa3-4dcb-92e6-42ba0b296ee6">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_48}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="180" y="15" width="180" height="15" uuid="bc7c8d6d-0646-420f-9edd-922927d3ae6e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Heard and terminated during quarter]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="29973275-3ec0-4b6a-8cc5-427a11da3f85">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[48]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Marriage">
+		<groupHeader>
+			<band height="100">
+				<staticText>
+					<reportElement style="Report Heading" x="0" y="0" width="180" height="15" uuid="87d653ba-67b7-4fda-a266-8b5902c860f7"/>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<text><![CDATA[Marriage Applications]]></text>
+				</staticText>
+				<staticText>
+					<reportElement x="180" y="0" width="180" height="15" uuid="06a7b5cd-9e43-4fa9-b4e1-1b720fc7d1e5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Middle"/>
+					<text><![CDATA[Granted during quarter]]></text>
+				</staticText>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="443" y="0" width="60" height="15" uuid="a6da1d36-cb24-4e45-adea-18183f043c5f">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{V_50}]]></textFieldExpression>
+				</textField>
+				<textField evaluationTime="Report" isBlankWhenNull="true">
+					<reportElement x="375" y="0" width="60" height="15" uuid="1562032a-6cad-454b-a26c-11cdb69ffe45">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<box padding="2">
+						<pen lineStyle="Dotted"/>
+						<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+					</box>
+					<textElement textAlignment="Right" verticalAlignment="Bottom"/>
+					<textFieldExpression><![CDATA[$V{A_50}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement x="365" y="0" width="10" height="15" uuid="631a856b-505b-47b3-8850-2e800e850654">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</reportElement>
+					<textElement textAlignment="Right" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[50]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<group name="Group2" isStartNewColumn="true" isStartNewPage="true" isReprintHeaderOnEachPage="true">
+		<groupHeader>
+			<band height="35" splitType="Prevent">
+				<printWhenExpression><![CDATA[$P{caseDetails}]]></printWhenExpression>
+				<textField textAdjust="StretchHeight" evaluationTime="Report">
+					<reportElement isPrintRepeatedValues="false" x="0" y="0" width="504" height="15" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="a3dc8a24-01fa-4dfe-ae76-0e36b5420cb8"/>
+					<textElement textAlignment="Center">
+						<font size="10" isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[($V{REPORT_COUNT} == 0 ? "No data found for " : "Case Details for ") + $P{judgeName}]]></textFieldExpression>
+				</textField>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="30" y="15" width="100" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="ff53532a-3ef4-40e2-9ecf-315acf8d556b"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Case #]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="130" y="15" width="60" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="72433e8e-be94-4841-91e1-8f21100b5c06"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Category]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="190" y="15" width="55" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="9369711c-2590-4a60-a373-696f1060ee29"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Subtype]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="443" y="15" width="61" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="965b3a68-e7b6-4e42-b181-7beb451fbc1a"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Visiting Judge]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="245" y="15" width="55" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="b8eeee30-d30a-4016-a80a-1af9c6e6fd24"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Filing Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="0" y="15" width="30" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="d758ce24-270c-4d2b-9e32-c49add551e02"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Report Line]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="400" y="15" width="43" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="d568bd7d-19ad-4063-9099-3cbaa72e4e36"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Citations]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="355" y="15" width="45" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="5b5e7f95-9e5c-45d4-a153-ae0bf320e7bf"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Accts Due]]></text>
+				</staticText>
+				<staticText>
+					<reportElement positionType="Float" isPrintRepeatedValues="false" x="300" y="15" width="55" height="20" isPrintInFirstWholeBand="true" isPrintWhenDetailOverflows="true" uuid="016357d6-8166-491f-aa5f-e77ece0374ad"/>
+					<box>
+						<bottomPen lineWidth="2.0" lineStyle="Double"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Bottom">
+						<font isBold="true"/>
+					</textElement>
+					<text><![CDATA[Term Date]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="225">
+			<staticText>
+				<reportElement x="0" y="0" width="504" height="50" uuid="db4e0d56-7ea7-4594-a6cc-775460aa67f3"/>
+				<textElement textAlignment="Center" markup="none">
+					<font size="14" isBold="true"/>
+				</textElement>
+				<text><![CDATA[The Supreme Court of Ohio
+Form C - Probate Division
+Court of Common Pleas]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="55" width="90" height="25" isPrintWhenDetailOverflows="true" uuid="9ba66c09-a61e-422a-8bfe-41f9db714a65"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Judge's Attorney Registration Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="83" width="90" height="25" uuid="a3dd4be1-5d3a-4e76-84e7-dbe0dd096934"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Judge's Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="111" width="90" height="25" uuid="4dc153f7-ecc0-4e80-b611-4f16abd81035"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Notification email]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="139" width="90" height="25" uuid="3ac49ff9-16af-4952-acfe-97c68dd54029"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Court]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="167" width="90" height="25" uuid="887709e7-5341-4a0a-95d0-3325b46b7077"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Date of most recent inventory]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="195" width="90" height="25" uuid="a4c09523-5e23-4147-a9b3-9b83301e6915"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Report quarter]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="95" y="55" width="256" height="25" uuid="ab25a471-d22f-4536-a0e9-81ae8c6bdd7e"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{judgeBarNumber}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement style="Header_Data" x="95" y="83" width="379" height="25" uuid="768a99a7-f47a-4ab6-8b84-60e703a9e1ef"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{judgeName}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement style="Header_Data" x="95" y="111" width="379" height="25" uuid="a7329806-beb6-4d31-9b9e-33c5fa621248"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{notificationEmail}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont">
+				<reportElement style="Header_Data" x="95" y="139" width="256" height="25" uuid="a49c6498-3091-466d-8c77-776058893a0a"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{jurisdiction}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yy" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="95" y="167" width="256" height="25" uuid="1abb1fc6-8fdb-4a85-8120-888082d0efaf"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lastInventoryDate}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Header_Data" x="95" y="195" width="125" height="25" uuid="d4c7ece7-8e83-4f66-bcee-4ec2fa3456fc">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportQuarter} == 1]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Jan. to March]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="220" y="195" width="91" height="25" uuid="60e83769-c118-4ee4-811c-028516f849ec"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Report year (YYYY)]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont">
+				<reportElement style="Header_Data" x="311" y="195" width="40" height="25" uuid="974b67b1-ebc7-4031-b5b1-7bcefd498c57"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportYear}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Header_Data" x="95" y="195" width="125" height="25" uuid="aafe7aa0-6bb8-4d76-88ba-685ab5f13858">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportQuarter} == 2]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[April to June]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Header_Data" x="95" y="195" width="125" height="25" uuid="1c67ed35-329f-4ac4-927c-7813b1b1c31d">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportQuarter} == 3]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[July to Sep.]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Header_Data" x="95" y="195" width="125" height="25" uuid="8f9ec0ab-d6bc-42c7-a125-8080db9cbb58">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{reportQuarter} == 4]]></printWhenExpression>
+				</reportElement>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
+				<text><![CDATA[Oct. to Dec.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<detail>
+		<band height="15" splitType="Prevent">
+			<printWhenExpression><![CDATA[$P{caseDetails} && $F{report_line} != 0]]></printWhenExpression>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="30" y="0" width="100" height="15" uuid="c5b6fef7-39ca-4d4b-817b-a5c7583e8792"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{case_number}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="130" y="0" width="60" height="15" uuid="27e687b0-5657-42e7-801c-e6a80beb47b8"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{case_category}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="190" y="0" width="55" height="15" uuid="f99345bd-adb8-45c6-8b26-251842864505"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{subcase_type}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="443" y="0" width="61" height="15" uuid="9d29e484-fbba-4fdb-8198-95b72afb7852"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{visiting_judge}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yy" isBlankWhenNull="true">
+				<reportElement x="245" y="0" width="55" height="15" uuid="bb298f24-cff0-4512-99d5-3c69f7b51872"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{filing_date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="0" y="0" width="30" height="15" uuid="d4dda2ab-d901-49d3-8a36-4973ca766776"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{report_line} > 50 ? "UNK" : $F{report_line}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement x="400" y="0" width="43" height="15" uuid="6bec8501-97d1-4a0e-9f55-4694c1dc5ffe"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{case_notices_citations}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yy" isBlankWhenNull="true">
+				<reportElement x="355" y="0" width="45" height="15" uuid="cd8ac6fe-86b9-4f49-aeae-7fa9d831916b"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{account_due_date}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yy" isBlankWhenNull="true">
+				<reportElement x="300" y="0" width="55" height="15" uuid="b40e991d-827c-4d69-92b9-7bdaa477e804"/>
+				<box leftPadding="3">
+					<pen lineWidth="0.5" lineStyle="Dotted"/>
+					<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+					<bottomPen lineWidth="1.0" lineStyle="Dotted" lineColor="#808080"/>
+					<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+				</box>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{filing_date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

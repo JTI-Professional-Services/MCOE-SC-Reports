@@ -1,0 +1,1319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 7.0.3.final using JasperReports Library version 6.20.6  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Form_A" language="groovy" pageWidth="792" pageHeight="1089" whenNoDataType="NoDataSection" columnWidth="752" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" whenResourceMissingType="Error" uuid="fb941174-b062-4c6c-be8f-2182c32db007">
+	<property name="net.sf.jasperreports.export.xls.detect.cell.type" value="true"/>
+	<property name="net.sf.jasperreports.export.xls.shrink.to.fit" value="false"/>
+	<property name="net.sf.jasperreports.print.keep.full.text" value="true"/>
+	<property name="net.sf.jasperreports.default.font.name" value="Arial"/>
+	<style name="Data_Cell" hTextAlign="Right" vTextAlign="Bottom" fontName="Arial">
+		<box padding="3">
+			<pen lineWidth="0.5" lineStyle="Dotted" lineColor="#000000"/>
+		</box>
+	</style>
+	<style name="Column_Label" style="Data_Cell" hTextAlign="Center" vTextAlign="Middle" rotation="Left" fontName="Arial"/>
+	<style name="Row_Number" hTextAlign="Center" vTextAlign="Middle" fontSize="6"/>
+	<style name="Row_Label" hTextAlign="Right" vTextAlign="Middle" fontName="Arial">
+		<box padding="0"/>
+		<paragraph lineSpacing="Fixed" lineSpacingSize="8.0"/>
+	</style>
+	<style name="Header_Data" fontName="Arial" fontSize="12" isBold="true">
+		<box padding="3">
+			<pen lineWidth="0.5" lineStyle="Dotted" lineColor="#000000"/>
+		</box>
+	</style>
+	<parameter name="judge" class="java.lang.String">
+		<parameterDescription><![CDATA[Please select the reporting judge]]></parameterDescription>
+	</parameter>
+	<parameter name="jurisdiction" class="java.lang.String">
+		<parameterDescription><![CDATA[The court or county to populate on the report]]></parameterDescription>
+	</parameter>
+	<parameter name="lastInventoryDate" class="java.util.Date">
+		<parameterDescription><![CDATA[Date of the most recent physical case inventory]]></parameterDescription>
+	</parameter>
+	<parameter name="reportMonth" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Two digit report month (1-12)]]></parameterDescription>
+	</parameter>
+	<parameter name="reportYear" class="java.lang.Integer">
+		<parameterDescription><![CDATA[Four digit report year]]></parameterDescription>
+	</parameter>
+	<parameter name="cutoff" class="java.util.Date"/>
+	<parameter name="report" class="java.lang.String"/>
+	<parameter name="reportLetter" class="java.lang.String"/>
+	<parameter name="caseDetails" class="java.lang.String"/>
+	<parameter name="reportTitle" class="java.lang.String"/>
+	<parameter name="columns" class="java.lang.String"/>
+	<parameter name="rows" class="java.lang.String"/>
+	<queryString language="SQL">
+		<![CDATA[]]>
+	</queryString>
+	<field name="email" class="java.lang.String"/>
+	<field name="judgeBarNumber" class="java.lang.String"/>
+	<field name="judgeName" class="java.lang.String"/>
+	<field name="reportBegin" class="java.util.Date"/>
+	<field name="reportEnd" class="java.util.Date"/>
+	<field name="reportSubTitle" class="java.lang.String"/>
+	<field name="reportTitle" class="java.lang.String"/>
+	<field name="caseNumber" class="java.lang.String"/>
+	<field name="caseType" class="java.lang.String"/>
+	<field name="actionType" class="java.lang.String"/>
+	<field name="beginDate" class="java.util.Date"/>
+	<field name="columnLetter" class="java.lang.String"/>
+	<field name="columnLabel" class="java.lang.String"/>
+	<field name="rowNumber" class="java.lang.String"/>
+	<field name="rowLabel" class="java.lang.String"/>
+	<field name="guidelineMonths" class="java.lang.Integer"/>
+	<field name="caseDue" class="java.util.Date"/>
+	<field name="monthsOverdue" class="java.lang.Integer"/>
+	<field name="reopenDate" class="java.util.Date"/>
+	<field name="dispositionType" class="java.lang.String"/>
+	<field name="dispositionDate" class="java.util.Date"/>
+	<field name="visitingJudge" class="java.lang.String"/>
+	<field name="pendingValue" class="java.lang.Integer"/>
+	<field name="columnIndex" class="java.lang.Integer"/>
+	<field name="rowIndex" class="java.lang.Integer"/>
+	<field name="guideline" class="java.lang.String"/>
+	<field name="caseCount" class="java.lang.Integer"/>
+	<field name="caseAgeGross" class="java.lang.Integer"/>
+	<field name="caseAgeNet" class="java.lang.Integer"/>
+	<field name="inactiveMonths" class="java.lang.Integer"/>
+	<variable name="caseCount_SUM_OVER_cell" class="java.lang.Integer" resetType="Group" resetGroup="column" calculation="Sum">
+		<variableExpression><![CDATA[$F{caseCount}]]></variableExpression>
+	</variable>
+	<variable name="caseCount_SUM_OVER_row" class="java.lang.Integer" resetType="Group" resetGroup="row" calculation="Sum">
+		<variableExpression><![CDATA[$F{caseCount}]]></variableExpression>
+	</variable>
+	<group name="row" minHeightToStartNewPage="50">
+		<groupExpression><![CDATA[$F{rowIndex}]]></groupExpression>
+	</group>
+	<group name="column" isReprintHeaderOnEachPage="true">
+		<groupExpression><![CDATA[$F{columnIndex}]]></groupExpression>
+		<groupHeader>
+			<band height="40">
+				<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{caseNumber}.length()  > 0]]></printWhenExpression>
+				<textField textAdjust="ScaleFont" evaluationTime="Group" evaluationGroup="column" isBlankWhenNull="true">
+					<reportElement mode="Opaque" x="660" y="20" width="92" height="20" isRemoveLineWhenBlank="true" backcolor="#F2DEDC" uuid="3bb0a1c8-0e1f-4552-91a0-511d9bd572f5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="0"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="11"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$F{rowIndex} < 99 &&$P{caseDetails}.length() > 0 && $F{caseNumber}.length()  > 0 && !$F{rowLabel}.containsIgnoreCase("oldest")]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0" leftPadding="2" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["TOTAL: " +$V{caseCount_SUM_OVER_cell}]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" evaluationTime="Group" evaluationGroup="row" isBlankWhenNull="true">
+					<reportElement mode="Opaque" x="0" y="0" width="752" height="20" isRemoveLineWhenBlank="true" printWhenGroupChanges="row" backcolor="#E0BDBC" uuid="cc249685-4818-4915-841c-4ae6594ce194">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{caseNumber}.length()  > 0]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0" leftPadding="10" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA[$F{rowLabel} ? ("Row "+ $F{rowNumber}+": "+ $F{rowLabel}) : "Cases Removed from Initial Query"]]></textFieldExpression>
+				</textField>
+				<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+					<reportElement mode="Opaque" x="0" y="20" width="660" height="20" isRemoveLineWhenBlank="true" backcolor="#F2DEDC" uuid="1f4462cb-08a0-4b53-9319-80449de58512">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="0"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="11"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$F{rowIndex} < 99 && $P{caseDetails}.length() > 0 && $F{caseNumber}.length()  > 0]]></printWhenExpression>
+					</reportElement>
+					<box topPadding="0" leftPadding="10" bottomPadding="0" rightPadding="0">
+						<topPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<leftPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<bottomPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+						<rightPen lineWidth="1.0" lineStyle="Solid" lineColor="#000000"/>
+					</box>
+					<textElement verticalAlignment="Middle">
+						<font isBold="true"/>
+					</textElement>
+					<textFieldExpression><![CDATA["Column " +$F{columnLetter}+": "+$F{columnLabel}]]></textFieldExpression>
+				</textField>
+			</band>
+			<band height="20">
+				<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+				<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{caseNumber}.length()  > 0]]></printWhenExpression>
+				<staticText>
+					<reportElement style="Data_Cell" x="40" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="87f4682c-3e00-40a1-88f8-bae0010db6f9">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="true"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Case Number]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="130" y="0" width="50" height="20" isRemoveLineWhenBlank="true" uuid="7a9bac67-e4ca-45c8-b565-079c8404f841">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{rowIndex} < 99]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Case Type]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="180" y="0" width="50" height="20" isRemoveLineWhenBlank="true" uuid="4a384e1e-0c07-405c-8c84-a834f897fb6e">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{rowIndex} < 99]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Action Type]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="230" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="cd0d3666-85c9-4edf-890e-cd6b983fe378">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[($F{rowIndex} < 4 || $F{rowLabel}.containsIgnoreCase("overdue")) && $P{caseDetails}.length() > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Case Begin Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="290" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="a6b5b87f-8da3-479c-9ad0-b0d24c831b65">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[($F{rowIndex} < 4 || $F{rowLabel}.containsIgnoreCase("overdue")) && $P{caseDetails}.length() > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Reopen Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="350" y="0" width="50" height="20" isRemoveLineWhenBlank="true" uuid="c2eb1a91-0571-4494-ab58-570db39e7126">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$F{dispositionType}.length() > 0 && $P{caseDetails}.length() > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Disp Type]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="400" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="a973556f-28e1-4ee8-a7aa-bac221d1954d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$F{dispositionType}.length() > 0 && $P{caseDetails}.length() > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Disp Date]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" isPrintRepeatedValues="false" x="460" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="7e824d0f-cbaa-4bc6-b66e-f60794081de7">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{dispositionType} == null && $F{rowIndex} != 99]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Case Due]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" isPrintRepeatedValues="false" x="604" y="10" width="28" height="10" isRemoveLineWhenBlank="true" uuid="c9b7df15-1198-4e2c-9e8e-c38476703c94">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{dispositionType} == null && $F{rowIndex} != 99]]></printWhenExpression>
+					</reportElement>
+					<box padding="0">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Guide]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" isPrintRepeatedValues="false" x="632" y="10" width="28" height="10" isRemoveLineWhenBlank="true" uuid="65123a4d-5180-42ac-8dd7-8d3903e7567b">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{dispositionType} == null && $F{rowIndex} != 99]]></printWhenExpression>
+					</reportElement>
+					<box padding="0">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Overdue]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="660" y="0" width="92" height="20" isRemoveLineWhenBlank="true" uuid="ed93b6c2-57eb-495f-b9fc-3ccf649d825d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$F{columnLetter} == "V" && $F{rowIndex} < 99 && $P{caseDetails}.length() > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Visiting Judge]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" mode="Transparent" x="130" y="0" width="622" height="20" isRemoveLineWhenBlank="true" uuid="84a575a7-0680-4e32-add5-377d3b856945">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{rowIndex} == 99]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Removal Reason]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" x="0" y="0" width="40" height="20" isRemoveLineWhenBlank="true" uuid="4bb09a9b-2621-49d0-90f2-4cf8be7f4b2d">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="true"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0]]></printWhenExpression>
+					</reportElement>
+					<box>
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="9"/>
+					</textElement>
+					<text><![CDATA[Idx]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" isPrintRepeatedValues="false" x="520" y="10" width="28" height="10" isRemoveLineWhenBlank="true" uuid="531ace81-0112-4abb-886f-4bf8e12086a1">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{dispositionType} == null && $F{rowIndex} != 99]]></printWhenExpression>
+					</reportElement>
+					<box padding="0">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Gross]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" isPrintRepeatedValues="false" x="548" y="10" width="28" height="10" isRemoveLineWhenBlank="true" uuid="ee618abc-c974-48b6-8642-95d239b6db34">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{dispositionType} == null && $F{rowIndex} != 99]]></printWhenExpression>
+					</reportElement>
+					<box padding="0">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Inactive]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" isPrintRepeatedValues="false" x="576" y="10" width="28" height="10" isRemoveLineWhenBlank="true" uuid="d6e74933-7d44-4817-b0f8-166e87cd5402">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{dispositionType} == null && $F{rowIndex} != 99]]></printWhenExpression>
+					</reportElement>
+					<box padding="0">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Net]]></text>
+				</staticText>
+				<staticText>
+					<reportElement style="Data_Cell" isPrintRepeatedValues="false" x="520" y="0" width="140" height="10" isRemoveLineWhenBlank="true" uuid="9a380f27-e131-4f1f-8180-a354d80d38c5">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+						<property name="com.jaspersoft.layout.grid.y" value="0"/>
+						<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+						<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+						<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{dispositionType} == null && $F{rowIndex} != 99]]></printWhenExpression>
+					</reportElement>
+					<box padding="0">
+						<rightPen lineWidth="1.0"/>
+					</box>
+					<textElement textAlignment="Center" verticalAlignment="Middle">
+						<font size="7"/>
+					</textElement>
+					<text><![CDATA[Case Age (in Months)]]></text>
+				</staticText>
+			</band>
+		</groupHeader>
+	</group>
+	<title>
+		<band height="283">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<textField>
+				<reportElement x="0" y="24" width="752" height="24" uuid="76436985-a807-4410-94ba-252a34e0fe2d"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{report}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="55" width="120" height="32" isPrintWhenDetailOverflows="true" uuid="689c738c-6290-4a9d-bcf8-1695bc7d76fb"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Judge's Attorney Registration Number]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="93" width="120" height="32" uuid="1939ce5b-523b-4bec-b507-5c11215d687a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Judge's Name]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="131" width="120" height="32" uuid="631bc74d-b72d-49d4-95f5-cc11a9a99e5a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Notification email]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="169" width="120" height="32" uuid="3653fcfe-b90b-4ecb-a585-dfc6d7eae4bc"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Court]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="207" width="120" height="32" uuid="3c7bae67-f8ac-4b51-a8a5-f1176a2ad836"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Date of most recent inventory]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="245" width="120" height="32" uuid="03e3d840-7e83-40d2-8aa3-26060824e9e1"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Report month (MM)]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="55" width="256" height="32" uuid="0c5a0dfc-96e2-4215-aaee-64d06f2a20d6"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{judgeBarNumber}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="93" width="576" height="32" uuid="26406c49-1d94-4002-b0ff-e9734973900b"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{judgeName} ?: $P{judge}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="131" width="576" height="32" uuid="c8de0124-efb5-462c-b5ad-a85e298c6896"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="169" width="256" height="32" uuid="16a4a8df-e507-43bd-bb10-f13036788de3"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{jurisdiction}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yy" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="207" width="256" height="32" uuid="92ed67dc-9dc3-4826-9ef9-f7904d161032"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lastInventoryDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="245" width="40" height="32" uuid="4c0880f2-3959-4b14-9de2-faf916c27a7f"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportMonth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Row_Label" x="221" y="245" width="120" height="32" uuid="1491f4e7-7677-42f6-bd3f-d95a364270aa"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Report year (YYYY)]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="341" y="245" width="40" height="32" uuid="9390af8d-f020-417f-89ac-f2f33947e6b8"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportYear}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="false">
+				<reportElement x="0" y="0" width="752" height="24" uuid="591afec1-e6ca-4516-b2b2-c5ddbd3aa936">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportTitle}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<detail>
+		<band height="20">
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{caseNumber}.length()  > 0]]></printWhenExpression>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="40" y="0" width="90" height="20" isRemoveLineWhenBlank="true" uuid="6f72f01c-a184-4d2d-bf9a-8afc1a00b98e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="true"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caseNumber}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="130" y="0" width="50" height="20" isRemoveLineWhenBlank="true" uuid="850f5e89-3387-41be-9fd4-ec4ccace54d9">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{rowIndex} < 99]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caseType}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="180" y="0" width="50" height="20" isRemoveLineWhenBlank="true" uuid="dbcd0d56-9788-4e97-a975-4c3d81971622">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{rowIndex} < 99]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actionType}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yyyy" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="230" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="4c6a71e1-acb2-4ed8-9c3e-047d649b9de2">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[($F{rowIndex} < 4 || $F{rowLabel}.containsIgnoreCase("overdue")) && $P{caseDetails}.length() > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{beginDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yyyy" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="290" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="0b565cc8-091b-4f5f-9845-2f1a1d5cf72e">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[($F{rowIndex} < 4 || $F{rowLabel}.containsIgnoreCase("overdue")) && $P{caseDetails}.length() > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{reopenDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="StretchHeight" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="350" y="0" width="50" height="20" isRemoveLineWhenBlank="true" uuid="6d6d9d57-61f5-4d2d-91b9-7f514c73cb5f">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$F{dispositionType}.length() > 0 && $P{caseDetails}.length() > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dispositionType}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yyyy" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="400" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="bf5e491b-abd2-4134-bf72-bacdeef23fde">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$F{dispositionType}.length() > 0 && $P{caseDetails}.length() > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{dispositionDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yyyy" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="460" y="0" width="60" height="20" isRemoveLineWhenBlank="true" uuid="01145970-abc6-4a0d-b1cb-261e4f4b83b5">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && !$F{dispositionType} && $F{caseDue}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caseDue}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="604" y="0" width="28" height="20" isRemoveLineWhenBlank="true" uuid="42cc85de-2460-447f-a1b3-145ba749d040">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && !$F{dispositionType} && $F{caseDue}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{guidelineMonths} ?: 0]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="632" y="0" width="28" height="20" isRemoveLineWhenBlank="true" uuid="68a8bcdc-523a-4362-8e36-a416fed93f51">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && !$F{dispositionType} && $F{caseDue}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{monthsOverdue} ?: 0]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="660" y="0" width="92" height="20" isRemoveLineWhenBlank="true" uuid="03182c72-48d5-4150-8bf6-315aa8e5f655">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$F{columnLetter} == "V" && $F{rowIndex} < 99 && $P{caseDetails}.length() > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{visitingJudge}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement key="" style="Data_Cell" stretchType="ContainerBottom" mode="Transparent" x="130" y="0" width="622" height="20" isRemoveLineWhenBlank="true" uuid="68b7e0c6-214a-4631-b63b-c2a40ba1bebc">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<property name="com.jaspersoft.studio.element.name" value="Removal Reason"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && $F{rowIndex} == 99]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{actionType}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="0" y="0" width="40" height="20" isRemoveLineWhenBlank="true" uuid="e08aa042-1da1-44ef-a042-37c30bb2f9f6">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="true"/>
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[($F{rowIndex} ? ("R" + $F{rowIndex}) : "")  + ($F{columnIndex} ? "C" + $F{columnIndex} : "")]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="520" y="0" width="28" height="20" isRemoveLineWhenBlank="true" uuid="409e33a4-08b2-4bf6-a29e-e35d9ebb2105">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && !$F{dispositionType} && $F{caseDue}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caseAgeGross} ?: 0]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="548" y="0" width="28" height="20" isRemoveLineWhenBlank="true" uuid="9fe5b537-1801-4eea-8598-0027e573d555">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && !$F{dispositionType} && $F{caseDue}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{inactiveMonths} ?: 0]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Data_Cell" stretchType="ContainerBottom" x="576" y="0" width="28" height="20" isRemoveLineWhenBlank="true" uuid="a182938f-dbea-4988-9248-998455d554ed">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					<property name="com.jaspersoft.layout.grid.x" value="-1"/>
+					<property name="com.jaspersoft.layout.grid.y" value="0"/>
+					<property name="com.jaspersoft.layout.grid.weight.x" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.weight.y" value="1.0"/>
+					<property name="com.jaspersoft.layout.grid.rowspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.colspan" value="1"/>
+					<property name="com.jaspersoft.layout.grid.weight.fixed" value="false"/>
+					<printWhenExpression><![CDATA[$P{caseDetails}.length() > 0 && !$F{dispositionType} && $F{caseDue}]]></printWhenExpression>
+				</reportElement>
+				<box>
+					<rightPen lineWidth="1.0"/>
+				</box>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{caseAgeNet} ?: 0]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="22">
+			<textField isBlankWhenNull="true">
+				<reportElement x="670" y="10" width="50" height="12" uuid="19b83063-86a2-4654-b262-0338f8bc0f20">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report" isBlankWhenNull="true">
+				<reportElement x="720" y="10" width="32" height="12" uuid="c22aad95-76f0-450e-8ef0-9b70f5a13e71"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band height="115">
+			<property name="com.jaspersoft.studio.unit.height" value="px"/>
+			<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+			<crosstab>
+				<reportElement x="0" y="0" width="752" height="115" isRemoveLineWhenBlank="true" uuid="db1820b1-4648-4eba-9dcb-334491896b3c">
+					<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.VerticalRowLayout"/>
+					<property name="com.jaspersoft.studio.crosstab.style.header" value="Crosstab_CH"/>
+					<property name="com.jaspersoft.studio.crosstab.style.group" value="Crosstab_CG"/>
+					<property name="com.jaspersoft.studio.crosstab.style.total" value="Crosstab_CT"/>
+					<property name="com.jaspersoft.studio.crosstab.style.detail" value="Crosstab_CD"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<crosstabDataset isDataPreSorted="true"/>
+				<crosstabHeaderCell>
+					<cellContents/>
+				</crosstabHeaderCell>
+				<rowGroup name="rowNumber" width="0" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{rowNumber}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Opaque">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<rowGroup name="rowLabel" width="213" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{rowLabel}]]></bucketExpression>
+					</bucket>
+					<crosstabRowHeader>
+						<cellContents mode="Transparent">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+								<reportElement key="" style="Row_Number" x="200" y="0" width="13" height="25" uuid="7ac14017-f22e-4ac1-a000-86ffd63df026">
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<property name="com.jaspersoft.studio.unit.y" value="px"/>
+									<property name="com.jaspersoft.studio.unit.x" value="px"/>
+									<property name="com.jaspersoft.studio.element.name" value="Row Number"/>
+									<printWhenExpression><![CDATA[$V{rowNumber} != "" & $V{rowNumber} != "99"]]></printWhenExpression>
+								</reportElement>
+								<box rightPadding="1"/>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font size="7"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{rowNumber}]]></textFieldExpression>
+							</textField>
+							<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+								<reportElement style="Row_Label" x="0" y="0" width="200" height="25" isRemoveLineWhenBlank="true" uuid="fc9fbcf7-4d57-41e3-987d-21876e13dee0">
+									<property name="com.jaspersoft.studio.element.name" value="Row Label"/>
+									<property name="com.jaspersoft.studio.unit.x" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<printWhenExpression><![CDATA[$V{rowNumber} != "" && !$V{rowLabel}.containsIgnoreCase("total") && $V{rowNumber} != "99"]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<paragraph lineSpacing="Fixed" lineSpacingSize="6.0"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{rowLabel}]]></textFieldExpression>
+							</textField>
+							<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+								<reportElement style="Row_Label" mode="Transparent" x="0" y="0" width="200" height="25" uuid="4475e859-62b0-48ac-99c3-f075da2fa67a">
+									<property name="com.jaspersoft.studio.element.name" value="Bold Row Label"/>
+									<property name="com.jaspersoft.studio.unit.x" value="px"/>
+									<property name="com.jaspersoft.studio.unit.width" value="px"/>
+									<printWhenExpression><![CDATA[$V{rowNumber} == "" || $V{rowLabel}.containsIgnoreCase("total")]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Right" verticalAlignment="Middle">
+									<font isBold="true"/>
+									<paragraph lineSpacing="Fixed" lineSpacingSize="6.0"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{rowLabel}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabRowHeader>
+					<crosstabTotalRowHeader>
+						<cellContents mode="Opaque">
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						</cellContents>
+					</crosstabTotalRowHeader>
+				</rowGroup>
+				<columnGroup name="columnLetter" height="15" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{columnLetter}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<textField isBlankWhenNull="true">
+								<reportElement mode="Transparent" x="0" y="0" width="40" height="15" uuid="aa9de355-fc7a-4389-877b-f46989cb7ac7">
+									<printWhenExpression><![CDATA[$V{columnLetter} && $V{columnLetter} != "ZZ"]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{columnLetter}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Transparent">
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.grid.JSSGridBagLayout"/>
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						</cellContents>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<columnGroup name="columnLabel" height="75" totalPosition="End" mergeHeaderCells="true">
+					<bucket order="None" class="java.lang.String">
+						<bucketExpression><![CDATA[$F{columnLabel}]]></bucketExpression>
+					</bucket>
+					<crosstabColumnHeader>
+						<cellContents mode="Transparent">
+							<property name="com.jaspersoft.studio.unit.width" value="px"/>
+							<property name="com.jaspersoft.studio.unit.height" value="px"/>
+							<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+							<textField isBlankWhenNull="true">
+								<reportElement key="" style="Data_Cell" mode="Transparent" x="0" y="0" width="40" height="75" uuid="bd28de2f-8e82-41ac-98ae-8e8179a9398a">
+									<property name="com.jaspersoft.studio.unit.x" value="px"/>
+									<property name="com.jaspersoft.studio.unit.y" value="px"/>
+									<property name="com.jaspersoft.studio.element.name" value="Bold Column Label"/>
+									<printWhenExpression><![CDATA[$V{columnLetter} == "T"]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left">
+									<font isBold="true"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$V{columnLabel}]]></textFieldExpression>
+							</textField>
+							<textField textAdjust="ScaleFont">
+								<reportElement key="" style="Data_Cell" mode="Transparent" x="0" y="0" width="40" height="75" uuid="6b3727e9-a08e-4bb4-b575-0f8109fa84d5">
+									<property name="com.jaspersoft.studio.element.name" value="Column Label"/>
+									<printWhenExpression><![CDATA[$V{columnLetter} && $V{columnLetter} != "T" && $V{columnLetter} != "ZZ"]]></printWhenExpression>
+								</reportElement>
+								<textElement textAlignment="Center" verticalAlignment="Middle" rotation="Left"/>
+								<textFieldExpression><![CDATA[$V{columnLabel}]]></textFieldExpression>
+							</textField>
+						</cellContents>
+					</crosstabColumnHeader>
+					<crosstabTotalColumnHeader>
+						<cellContents mode="Opaque"/>
+					</crosstabTotalColumnHeader>
+				</columnGroup>
+				<measure name="caseCount_MEASURE" class="java.lang.Integer" calculation="Sum">
+					<measureExpression><![CDATA[$F{caseCount}]]></measureExpression>
+				</measure>
+				<measure name="guideline_MEASURE" class="java.lang.String">
+					<measureExpression><![CDATA[$F{guideline}]]></measureExpression>
+				</measure>
+				<crosstabCell width="40" height="25">
+					<cellContents mode="Transparent">
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+						<textField isBlankWhenNull="true">
+							<reportElement style="Data_Cell" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="40" height="25" isRemoveLineWhenBlank="true" uuid="22afa010-f290-4ff2-9746-aabd09682c60">
+								<property name="com.jaspersoft.studio.element.name" value="Time Guideline"/>
+								<printWhenExpression><![CDATA[$V{columnLetter} && $V{rowNumber} == "" && $V{rowLabel}.containsIgnoreCase("guideline") && $V{columnLetter} != "ZZ"]]></printWhenExpression>
+							</reportElement>
+							<box padding="2">
+								<topPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+								<leftPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle">
+								<font isBold="true"/>
+								<paragraph lineSpacing="Fixed" lineSpacingSize="6.0"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{guideline_MEASURE} ?: "X"]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement key="" style="Data_Cell" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="40" height="25" isRemoveLineWhenBlank="true" uuid="7560c660-5f9a-49a2-93bf-5a7da49af2c7">
+								<property name="com.jaspersoft.studio.element.name" value="Row 4 Case Count"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<printWhenExpression><![CDATA[$V{columnLetter} && $V{rowNumber} == "4" && $V{columnLetter} != "ZZ"]]></printWhenExpression>
+							</reportElement>
+							<box>
+								<pen lineWidth="1.0"/>
+								<topPen lineWidth="3.0" lineStyle="Double"/>
+							</box>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{caseCount_MEASURE}]]></textFieldExpression>
+						</textField>
+						<textField isBlankWhenNull="true">
+							<reportElement key="" style="Data_Cell" positionType="Float" stretchType="ContainerHeight" mode="Transparent" x="0" y="0" width="40" height="25" isRemoveLineWhenBlank="true" uuid="9fad4757-4992-43af-82eb-b2df715e9877">
+								<property name="com.jaspersoft.studio.element.name" value="Case Count"/>
+								<printWhenExpression><![CDATA[$V{rowNumber} != "" && $V{rowNumber} != "4" && $V{rowNumber} != "99" && $V{columnLetter} && $V{columnLetter} != "ZZ"]]></printWhenExpression>
+							</reportElement>
+							<textElement textAlignment="Center" verticalAlignment="Middle"/>
+							<textFieldExpression><![CDATA[$V{caseCount_MEASURE}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="25" columnTotalGroup="columnLabel">
+					<cellContents mode="Opaque"/>
+				</crosstabCell>
+				<crosstabCell width="40" height="0" rowTotalGroup="rowLabel">
+					<cellContents mode="Opaque">
+						<property name="com.jaspersoft.studio.unit.height" value="pixel"/>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="rowLabel" columnTotalGroup="columnLabel">
+					<cellContents mode="Opaque">
+						<property name="com.jaspersoft.studio.unit.height" value="px"/>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="13" height="25" columnTotalGroup="columnLetter">
+					<cellContents mode="Transparent">
+						<property name="com.jaspersoft.studio.unit.width" value="px"/>
+						<property name="com.jaspersoft.studio.layout" value="com.jaspersoft.studio.editor.layout.FreeLayout"/>
+						<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+							<reportElement key="" style="Row_Number" x="0" y="0" width="13" height="25" uuid="95cc927c-11de-4dd8-b61c-1861f47ada4b">
+								<property name="com.jaspersoft.studio.unit.width" value="px"/>
+								<property name="com.jaspersoft.studio.unit.y" value="px"/>
+								<property name="com.jaspersoft.studio.unit.x" value="px"/>
+								<property name="com.jaspersoft.studio.element.name" value="Row Number"/>
+								<printWhenExpression><![CDATA[$V{rowNumber} != "" && $V{rowNumber} != "99"]]></printWhenExpression>
+							</reportElement>
+							<box leftPadding="1">
+								<pen lineWidth="0.5" lineStyle="Dotted"/>
+								<topPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<leftPen lineWidth="1.0" lineStyle="Dotted" lineColor="#000000"/>
+								<bottomPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+								<rightPen lineWidth="0.0" lineStyle="Solid" lineColor="#000000"/>
+							</box>
+							<textElement textAlignment="Left" verticalAlignment="Middle">
+								<font size="7"/>
+							</textElement>
+							<textFieldExpression><![CDATA[$V{rowNumber}]]></textFieldExpression>
+						</textField>
+					</cellContents>
+				</crosstabCell>
+				<crosstabCell width="13" height="0" rowTotalGroup="rowLabel" columnTotalGroup="columnLetter">
+					<cellContents mode="Opaque"/>
+				</crosstabCell>
+				<crosstabCell width="40" height="0" rowTotalGroup="rowNumber">
+					<cellContents mode="Opaque"/>
+				</crosstabCell>
+				<crosstabCell width="13" height="0" rowTotalGroup="rowNumber" columnTotalGroup="columnLetter">
+					<cellContents mode="Opaque"/>
+				</crosstabCell>
+				<crosstabCell width="0" height="0" rowTotalGroup="rowNumber" columnTotalGroup="columnLabel">
+					<cellContents mode="Opaque"/>
+				</crosstabCell>
+			</crosstab>
+		</band>
+	</summary>
+	<noData>
+		<band height="234">
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="92" width="120" height="32" uuid="a2e0ae16-cb33-4b5b-838e-1b29192156cd"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Court]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="130" width="120" height="32" uuid="f937ee7f-c581-4992-8e44-464698abefe9"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Date of most recent inventory]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="168" width="120" height="32" uuid="8c228404-5a39-4614-ae49-a065a8271f4e"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Report month (MM)]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="92" width="256" height="32" uuid="0c4a051c-8ec8-4cc9-ba47-8fb3f3c78bdf"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{jurisdiction}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" pattern="MM/dd/yy" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="130" width="256" height="32" uuid="e7042d58-b4e4-4648-88c1-652235aba83b"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lastInventoryDate}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="168" width="40" height="32" uuid="60e85403-7757-4564-9802-efcaa1b21665"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportMonth}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Row_Label" x="221" y="168" width="120" height="32" uuid="7aaed1c0-f7d2-4477-9505-5c6be5d5fe0d"/>
+				<box rightPadding="3"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Report year (YYYY)]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="341" y="168" width="40" height="32" uuid="0cf1162e-fbae-41f9-978a-fdaed7580a64"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportYear}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement style="Row_Label" x="0" y="55" width="120" height="32" uuid="3ccc564f-3a59-4f9f-afad-9a867320b215"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[Judge's Name]]></text>
+			</staticText>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="true">
+				<reportElement style="Header_Data" x="125" y="55" width="576" height="32" uuid="269486ea-30c9-4936-9547-f2848476b7e2"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{judge}.tokenize(" ")[0..-2].join(" ")]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="24" width="752" height="24" uuid="e1b98b85-3e60-4b28-91f3-5c069c36a49b"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{report}]]></textFieldExpression>
+			</textField>
+			<textField textAdjust="ScaleFont" isBlankWhenNull="false">
+				<reportElement x="0" y="0" width="752" height="24" uuid="4e56a7a8-d823-43c1-8f2b-f795c6eb6352">
+					<property name="com.jaspersoft.studio.unit.x" value="px"/>
+					<property name="com.jaspersoft.studio.unit.y" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Arial" size="14" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{reportTitle}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="210" width="752" height="24" uuid="320ba39f-da61-4be1-b595-433608b2d1e0"/>
+				<textElement textAlignment="Center" markup="none">
+					<font fontName="Arial" size="14" isBold="false"/>
+				</textElement>
+				<text><![CDATA[No data found.]]></text>
+			</staticText>
+		</band>
+	</noData>
+</jasperReport>
